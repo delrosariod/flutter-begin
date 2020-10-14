@@ -13,16 +13,36 @@ class _MyFirstPageState extends State<MyFirstPage> {
   Widget build(BuildContext context) {
     Object onPressed1() {
       if (_enabled) {
+        setState(() {
+          _msg1 = 'Enabled';
+        });
+        print('onPressed1 returning address of anon func but NOT running it');
         return () {
-          setState(() {
-            //_msg1 = 'Enabled';
-            print('Button Pressed');
-          });
+          print('Anon func now running as button pressed');
         };
       } else {
+        setState(() {
+          _msg1 = '';
+        });
+        print('onPressed1 returning NULL');
         return null;
       }
     }
+
+    Object onPressed2() {
+      if (_enabled) {
+        print(
+            'onPressed2 returning the result of running the anonymous function');
+        return () {
+          print('Anon func now running');
+        }();
+      } else {
+        print('onPressed2 returning NULL');
+        return null;
+      }
+    }
+
+    print('The build is being RUN');
 
     return Scaffold(
       appBar: AppBar(
@@ -37,9 +57,10 @@ class _MyFirstPageState extends State<MyFirstPage> {
                 Text('enable functionality'),
                 Switch(
                     value: _enabled,
-                    onChanged: (bool value1) {
+                    onChanged: (bool onChangedValue) {
+                      print('onChangedValue is $onChangedValue');
+                      _enabled = onChangedValue;
                       setState(() {
-                        _enabled = value1;
                         if (_enabled) {
                           _msg1 = 'Enabled';
                           print('_enabled is true');
